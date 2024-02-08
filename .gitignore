@@ -5,6 +5,7 @@ __pycache__/
 # Dependency directories
 /env
 /venv
+/dev_venv
 
 # IDE files
 .vscode/
