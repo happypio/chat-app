@@ -1,0 +1,18 @@
+
+# Python byte-compiled
+__pycache__/
+
+# Dependency directories
+/env
+/venv
+
+# IDE files
+.vscode/
+.idea/
+
+# Django
+
+db.sqlite3
+*.log
+*.pot
+*.pyc
