@@ -26,3 +26,8 @@ def login_view(request):
                 request,
                 "custom_auth/login.html",
             )
+
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse("custom_auth:login"))

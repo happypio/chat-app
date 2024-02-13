@@ -1,0 +1,11 @@
+<div class="user_panel"></div>
+{% if user.is_authenticated %}
+<p>Hi {{ user.username }}!</p>
+<form action="{% url 'custom_auth:logout' %}" method="post">
+  {% csrf_token %}
+  <button type="submit">Log Out</button>
+</form>
+{% else %}
+<p>You are not logged in</p>
+{% endif %}
+</div>
