@@ -3,22 +3,11 @@
 {% block title %}Chat app - log in{% endblock %}
 
 {% block content %}
-<section>
-    <form action="{% url 'custom_auth:login' %}" method="post">
-        {% csrf_token %} 
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        <div class="form-group">
-            <label class="text-primary text-dark font-weight-bold">Enter Username</label>
-            <input type="text" class="form-control" name="username" placeholder="Enter Username">
-        </div>
-
-        <br>
-            <div class="form-group">
-                <label class="text-primary text-dark font-weight-bold">Enter Password</label>
-                <input type="password" class="form-control" name="password" placeholder="Enter Password">
-            </div>
-        <br>
-        <button type="submit" class="btn btn-primary btn-lg">Log in</button>
-    </form>
-</section>
+<form action="{% url 'custom_auth:login' %}" method="POST" novalidate>
+	{% csrf_token %}
+	<h2>Login</h2>
+	{{form.as_p}}
+	<input type="submit" value="Login" />
+    <a href="{% url 'custom_auth:register' %}">Or register here</a>
+</form>
 {% endblock %}
