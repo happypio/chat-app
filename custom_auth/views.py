@@ -1,15 +1,76 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse
+from django.contrib.auth import (
+    authenticate,
+    login,
+    logout,
+    update_session_auth_hash,
+)
+from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import redirect, render
 
-from .forms import LoginForm, RegisterForm
+from .forms import ChangeTypeForm, LoginForm, RegisterForm
+
+
+def settings_view(request):
+    if request.user.is_authenticated:
+        pass_form = PasswordChangeForm(request.user)
+
+        if request.method == "POST":
+            sett_form = ChangeTypeForm(request.POST, instance=request.user)
+            if sett_form.is_valid():
+                sett_form.save()
+                messages.success(request, "Your type has been updated!")
+                return redirect(to="custom_auth:settings")
+            else:
+                messages.error(request, f"Invalid form")
+        else:
+            sett_form = ChangeTypeForm(instance=request.user)
+
+        return render(
+            request,
+            "custom_auth/settings.html",
+            {
+                "sett_form": sett_form,
+                "pass_form": pass_form,
+            },
+        )
+    else:
+        return redirect(to="custom_auth:login")
+
+
+def change_password(request):
+    if request.user.is_authenticated:
+        sett_form = ChangeTypeForm(instance=request.user)
+
+        if request.method == "POST":
+            pass_form = PasswordChangeForm(request.user, request.POST)
+            if pass_form.is_valid():
+                user = pass_form.save()
+                update_session_auth_hash(request, user)
+                messages.success(
+                    request, "Your password was successfully updated!"
+                )
+                return redirect(to="custom_auth:settings")
+            else:
+                messages.error(request, "Failed to update password")
+        else:
+            pass_form = PasswordChangeForm(request.user)
+
+        return render(
+            request,
+            "custom_auth/settings.html",
+            {
+                "sett_form": sett_form,
+                "pass_form": pass_form,
+            },
+        )
+    else:
+        return redirect(to="custom_auth:login")
 
 
 def redirect_if_authenticated(request, to_redirect, to_render, args=None):
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse(to_redirect))
+        return redirect(to=to_redirect)
     else:
         return render(
             request,
@@ -30,7 +91,7 @@ def login_view(request):
                     request, f"Hi {username.title()}, welcome back!"
                 )
                 login(request, user)
-                return HttpResponseRedirect(reverse("chats:chat"))
+                return redirect(to="chats:chat")
         messages.error(request, f"Invalid username or password")
         return render(
             request,
@@ -57,7 +118,7 @@ def register_view(request):
             user.save()
             messages.success(request, "You have singed up successfully.")
             login(request, user)
-            return HttpResponseRedirect(reverse("chats:chat"))
+            return redirect(to="chats:chat")
         else:
             return render(
                 request,
@@ -77,4 +138,4 @@ def register_view(request):
 def logout_view(request):
     logout(request)
     messages.success(request, f"You have been logged out.")
-    return HttpResponseRedirect(reverse("custom_auth:login"))
+    return redirect(to="custom_auth:login")

@@ -24,3 +24,11 @@ class ChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = ["username", "email", "type"]
+
+
+class ChangeTypeForm(UserChangeForm):
+    password = None
+
+    class Meta:
+        model = CustomUser
+        fields = ["type"]

@@ -5,6 +5,7 @@
   {% csrf_token %}
   <button type="submit">Log Out</button>
 </form>
+<a href="{% url 'custom_auth:settings' %}">Account settings</a>
 {% else %}
 <p>You are not logged in</p>
 {% endif %}
