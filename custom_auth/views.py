@@ -6,12 +6,24 @@ from django.contrib.auth import (
     update_session_auth_hash,
 )
 from django.contrib.auth.forms import PasswordChangeForm
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 
 from .forms import ChangeTypeForm, LoginForm, RegisterForm
 
 
-def settings_view(request):
+def settings_view(request: HttpRequest) -> HttpResponse:
+    """
+    View for handling user settings.
+
+    This view allows authenticated users to change their account settings.
+    If user isn't authenticated it redirects him to login view.
+
+    Args:
+        request (HttpRequest): current request
+    Returns:
+        HttpResponse: Rendered template with settings form
+    """
     if request.user.is_authenticated:
         pass_form = PasswordChangeForm(request.user)
 
@@ -38,7 +50,17 @@ def settings_view(request):
         return redirect(to="custom_auth:login")
 
 
-def change_password(request):
+def change_password(request: HttpRequest) -> HttpResponse:
+    """
+    View for handling password change request.
+
+    This view allows only authenticated users to change their passwords.
+
+    Args:
+        request (HttpRequest): current request
+    Returns:
+        HttpResponse: Rendered template with settings form
+    """
     if request.user.is_authenticated:
         sett_form = ChangeTypeForm(instance=request.user)
 
@@ -68,7 +90,22 @@ def change_password(request):
         return redirect(to="custom_auth:login")
 
 
-def redirect_if_authenticated(request, to_redirect, to_render, args=None):
+def redirect_if_authenticated(
+    request: HttpRequest, to_redirect: str, to_render: str, args: dict = None
+) -> HttpResponse:
+    """
+    Redirects to specified url if user is not authenticated.
+    Else renders specified tempalte.
+
+    Args:
+        request (HttpRequest): current request
+        to_redirect (str): name of an app view
+        to_render (str): path to html file with template
+        args (dict, optional): a dictionary to add to the template context
+    Returns:
+        HttpResponse: Rendered template with settings form or redirect to specified url
+
+    """
     if request.user.is_authenticated:
         return redirect(to=to_redirect)
     else:
@@ -79,7 +116,17 @@ def redirect_if_authenticated(request, to_redirect, to_render, args=None):
         )
 
 
-def login_view(request):
+def login_view(request: HttpRequest) -> HttpResponse:
+    """
+    View for handling user login.
+
+    This view allows authenticated users to log in to the application
+
+    Args:
+        request (HttpRequest): current request
+    Returns:
+        HttpResponse: Rendered template with settings form
+    """
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -109,7 +156,17 @@ def login_view(request):
         )
 
 
-def register_view(request):
+def register_view(request: HttpRequest) -> HttpResponse:
+    """
+    View for handling user registration requests.
+
+    This view allows users to register a new account.
+
+    Args:
+        request (HttpRequest): current request
+    Returns:
+        HttpResponse: Rendered template with settings form
+    """
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
@@ -135,7 +192,17 @@ def register_view(request):
         )
 
 
-def logout_view(request):
+def logout_view(request: HttpRequest) -> HttpResponse:
+    """
+    View for handling user logout.
+
+    This view logs out the currently authenticated user.
+
+    Args:
+        request (HttpRequest): current request
+    Returns:
+        HttpResponse: Rendered template with settings form
+    """
     logout(request)
     messages.success(request, f"You have been logged out.")
     return redirect(to="custom_auth:login")

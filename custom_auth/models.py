@@ -3,6 +3,13 @@ from django.db import models
 
 
 class CustomUser(AbstractUser):
+    """
+    Custom user model for the application.
+
+    It extends AbstractUser and adds type field to categorize users
+    into different types.
+    """
+
     T1 = "Type 1"
     T2 = "Type 2"
     TYPE_CHOICES = (
