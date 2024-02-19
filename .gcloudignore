@@ -1,0 +1,32 @@
+# .gcloudignore
+
+.gcloudignore
+
+# Ignore local .env file
+.env
+
+.git
+.gitignore
+
+
+# Python pycache:
+__pycache__/
+
+# Ignore the local DB
+db.sqlite3
+
+# Dependency directories
+/env
+/venv
+/dev_venv
+
+# IDE files
+.vscode/
+.idea/
+
+# Django
+
+db.sqlite3
+*.log
+*.pot
+*.pyc

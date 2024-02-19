@@ -1,0 +1,66 @@
+name: Deploy to GAE
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  check_version:
+    name: Check if version file changed
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check for version file changes
+        id: check_changes
+        run: |
+          git diff --exit-code HEAD^ HEAD version.txt || echo "::set-output name=version_changed::true"
+  deploy:
+    name: Deploying to Google Cloud
+    runs-on: ubuntu-latest
+    needs: check_version
+    if: ${{ needs.check_version.outputs.version_changed == 'true' }}
+    env:
+      DEBUG=False
+      SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup python 3.10
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+
+      - name: Install Requirements
+        run: |
+          pip install -r requirements.txt
+
+      - name: Connect to gcloud
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.PROJECT_ID }}
+          service_account_key: ${{ secrets.SERVICE_ACCOUNT }}
+          export_default_credentials: true
+
+      - name: Gather Static Files
+        run: |
+          python manage.py collectstatic --noinput
+
+      - name: Run Migrations
+        run: |
+          python manage.py makemigrations
+          python manage.py migrate
+
+      - name: Deploy to App Engine
+        id: deploy
+        uses: google-github-actions/deploy-appengine@v0.2.0
+        with:
+          deliverables: app.yaml
+          version: v1
+          project_id: ${{ secrets.PROJECT_ID }}
+          credentials: ${{ secrets.SERVICE_ACCOUNT }}
