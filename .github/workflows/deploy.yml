@@ -12,8 +12,8 @@ jobs:
     name: Deploying to Google Cloud
     runs-on: ubuntu-latest
     env:
-      DEBUG=False
-      SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+      DEBUG: "False"
+      SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
