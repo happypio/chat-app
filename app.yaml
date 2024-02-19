@@ -10,5 +10,9 @@ handlers:
   - url: /.*
     script: auto
 
+env_variables:
+  SECRET_KEY: $SECRET_KEY
+  DEBUG: $DEBUG
+
 runtime_config:
   python_version: 3
