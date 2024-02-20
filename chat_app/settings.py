@@ -10,20 +10,43 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import io
 import os
 from pathlib import Path
 from urllib.parse import urlparse
 
 import environ
+from google.cloud import secretmanager
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialise environment variables
 env = environ.Env(
     # set casting, default value
     DEBUG=(bool, False)
 )
+env_file = os.path.join(BASE_DIR, ".env")
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+if os.path.isfile(env_file):
+    # read a local .env file
+    env.read_env(env_file)
+elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
+    # pull .env file from Secret Manager
+    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+
+    client = secretmanager.SecretManagerServiceClient()
+    settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
+    name = f"projects/{project_id}/secrets/{settings_name}/versions/latest"
+    payload = client.access_secret_version(name=name).payload.data.decode(
+        "UTF-8"
+    )
+
+    env.read_env(io.StringIO(payload))
+else:
+    raise Exception(
+        "No local .env or GOOGLE_CLOUD_PROJECT detected. No secrets found."
+    )
 
 env_file = os.path.join(BASE_DIR, ".env")
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))

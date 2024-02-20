@@ -10,9 +10,5 @@ handlers:
   - url: /.*
     script: auto
 
-env_variables:
-  SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-  DEBUG: "False"
-
 runtime_config:
   python_version: 3
