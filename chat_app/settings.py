@@ -121,21 +121,13 @@ WSGI_APPLICATION = "chat_app.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DB_PATH = os.path.join(BASE_DIR, "db.sqlite3")
-try:
-    from shutil import copyfile
-
-    DB_PATH = "/tmp/db.sqlite3"
-    copyfile(os.path.join(BASE_DIR, "db.sqlite3"), DB_PATH)
-except:
-    pass
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        # "NAME": BASE_DIR / "db.sqlite3",
-        "NAME": DB_PATH,
-    }
+    # "default": {
+    #    "ENGINE": "django.db.backends.sqlite3",
+    #    "NAME": BASE_DIR / "db.sqlite3",
+    # }
+    "default": env.db(),
 }
 
 
