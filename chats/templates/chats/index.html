@@ -3,8 +3,13 @@
 {% block title %}Chat app - search{% endblock %}
 
 {% block content %}
-What chat room would you like to enter?<br>
 
+<form action="{% url 'chats:chat' %}" method="POST" novalidate>
+    <h2>What chat room would you like to enter?</h2>
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="JOIN!" />
+</form>
 <input id="room-name-input" type="text" size="100"><br>
 <input id="room-name-submit" type="button" value="Enter">
 

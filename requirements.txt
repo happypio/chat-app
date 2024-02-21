@@ -4,3 +4,4 @@ google-cloud-secret-manager==2.18.1
 psycopg2-binary==2.9.5
 channels==4.0.0
 daphne==4.1.0
+channels_redis
