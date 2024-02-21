@@ -77,6 +77,7 @@ else:
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "chats.apps.ChatsConfig",
     "custom_auth.apps.CustomAuthConfig",
     "django.contrib.admin",
@@ -172,3 +173,6 @@ STATIC_ROOT = BASE_DIR / "static"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "custom_auth.CustomUser"
+
+# Daphne
+ASGI_APPLICATION = "chat_app.asgi.application"
