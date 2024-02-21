@@ -7,22 +7,18 @@
 <form action="{% url 'chats:chat' %}" method="POST" novalidate>
     <h2>What chat room would you like to enter?</h2>
     {% csrf_token %}
-    {{form.as_p}}
+    {% for field in form %}
+	<p>
+		{% if field.errors %}
+		<ul class="errorlist">
+			{% for error in field.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	 	{{ field }}
+	</p>
+	{% endfor %}
     <input type="submit" value="JOIN!" />
 </form>
-<input id="room-name-input" type="text" size="100"><br>
-<input id="room-name-submit" type="button" value="Enter">
-
-<script>
-    document.querySelector('#room-name-input').focus();
-    document.querySelector('#room-name-input').onkeyup = function(e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#room-name-submit').click();
-        }
-    };
-    document.querySelector('#room-name-submit').onclick = function(e) {
-        var roomName = document.querySelector('#room-name-input').value;
-        window.location.pathname = '/' + roomName + '/';
-    };
-</script>
 {% endblock %}
