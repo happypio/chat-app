@@ -21,7 +21,7 @@ vpc_access_connector:
   name: CLOUD_VPC_CONNECTOR_NAME
 
 automatic_scaling:
-  min_num_instances: 1
+  min_num_instances: 0
   max_num_instances: 2
 
 network:
