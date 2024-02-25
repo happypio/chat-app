@@ -39,7 +39,7 @@ jobs:
           python manage.py collectstatic --noinput
 
       - name: Set up connection variables in app.yaml
-        run: bash setup_env_variables.sh
+        run: bash set_up_connections.sh
 
       - name: Deploy to App Engine
         id: deploy
