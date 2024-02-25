@@ -1,8 +1,11 @@
 # [START django_app]
 service: default
-runtime: python310
-env: standard
-entrypoint: daphne -p :$PORT chat_app.asgi:application
+runtime: python
+env: flex
+entrypoint: daphne -b 0.0.0.0 -p $PORT chat_app.asgi:application
+
+beta_settings:
+  cloud_sql_instances: CLOUD_SQL_INSTANCE_CONNECTION_NAME
 
 handlers:
   - url: /static
@@ -11,4 +14,20 @@ handlers:
     script: auto
 
 runtime_config:
-  python_version: 3
+  operating_system: "ubuntu22"
+  python_version: "3.10"
+
+vpc_access_connector:
+  name: CLOUD_VPC_CONNECTOR_NAME
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 2
+
+network:
+  session_affinity: true
+
+resources:
+ cpu: 0.2
+ memory_gb: 0.6
+ disk_size_gb: 10

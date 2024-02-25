@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GOOGLE_CLOUD_PROJECT: ${{ secrets.PROJECT_ID }}
+      GCP_CONNECTOR: ${{ secrets.GCP_CONNECTOR }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,6 +37,9 @@ jobs:
       - name: Gather Static Files
         run: |
           python manage.py collectstatic --noinput
+
+      - name: Set up connection variables in app.yaml
+        run: bash setup_env_variables.sh
 
       - name: Deploy to App Engine
         id: deploy
