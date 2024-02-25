@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Chat app - search{% endblock %}
+
+{% block content %}
+
+<form action="{% url 'chats:chat' %}" method="POST" novalidate>
+    <h2>What chat room would you like to enter?</h2>
+    {% csrf_token %}
+    {% for field in form %}
+	<p>
+		{% if field.errors %}
+		<ul class="errorlist">
+			{% for error in field.errors %}
+			<li>{{ error }}</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	 	{{ field }}
+	</p>
+	{% endfor %}
+    <input type="submit" value="JOIN!" />
+</form>
+{% endblock %}

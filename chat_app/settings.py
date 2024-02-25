@@ -62,21 +62,14 @@ DEBUG = env("DEBUG")
 
 APPENGINE_URL = env("APPENGINE_URL", default=None)
 if APPENGINE_URL:
-    # Ensure a scheme is present in the URL before it's processed.
-    if not urlparse(APPENGINE_URL).scheme:
-        APPENGINE_URL = f"https://{APPENGINE_URL}"
-
     ALLOWED_HOSTS = [urlparse(APPENGINE_URL).netloc]
     CSRF_TRUSTED_ORIGINS = [APPENGINE_URL]
-    SECURE_SSL_REDIRECT = True
 else:
     ALLOWED_HOSTS = ["*"]
-# ALLOWED_HOSTS = []
-
-
 # Application definition
 
 INSTALLED_APPS = [
+    "daphne",
     "chats.apps.ChatsConfig",
     "custom_auth.apps.CustomAuthConfig",
     "django.contrib.admin",
@@ -172,3 +165,14 @@ STATIC_ROOT = BASE_DIR / "static"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "custom_auth.CustomUser"
+
+# Daphne
+ASGI_APPLICATION = "chat_app.asgi.application"
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [(env("REDIS_HOST"), 6379)],
+        },
+    },
+}
