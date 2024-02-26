@@ -55,6 +55,6 @@ jobs:
         uses: google-github-actions/deploy-appengine@v0.2.0
         with:
           deliverables: app.yaml
-          version: v1.1
+          version: v1_1
           project_id: ${{ secrets.PROJECT_ID }}
           credentials: ${{ secrets.SERVICE_ACCOUNT }}
