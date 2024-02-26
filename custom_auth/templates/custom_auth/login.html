@@ -3,15 +3,19 @@
 {% block title %}Chat app - log in{% endblock %}
 
 {% block content %}
-<form action="{% url 'custom_auth:login' %}" method="POST" novalidate>
-	{% csrf_token %}
-	<h2>Login</h2>
-	{% bootstrap_form form %}
-	{% buttons %}
-	  <button type="submit" class="btn btn-primary">
-		Login
-	  </button>
-	{% endbuttons %}
-    <a href="{% url 'custom_auth:register' %}">Or register here</a>
-</form>
+<div class="container p-5 border mt-3">
+	<form action="{% url 'custom_auth:login' %}" method="POST" novalidate>
+		{% csrf_token %}
+		<h2>Login</h2>
+		{% for field in form %}
+		{% bootstrap_field field show_label=False %}
+		{% endfor %}
+		{% buttons %}
+		<button type="submit" class="btn btn-primary">
+			Login
+		</button>
+		<a class="btn btn-outline-primary me-2" href="{% url 'custom_auth:register' %}">Or register here</a>
+		{% endbuttons %}
+	</form>
+</div>
 {% endblock %}
