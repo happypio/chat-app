@@ -40,7 +40,9 @@ jobs:
 
       - name: Move necessary files
         run: |
-          cp gae_flexible_deployment/{app.yaml, .gcloudignore, set_up_connections.sh} .
+          cp gae_flexible_deployment/app.yaml . &
+          cp gae_flexible_deployment/.gcloudignore . &
+          cp gae_flexible_deployment/set_up_connections.sh .
 
       - name: Set up connection variables in app.yaml
         env:
