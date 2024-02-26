@@ -4,7 +4,11 @@
 <p>Hi {{ user.username }}!</p>
 <form action="{% url 'custom_auth:logout' %}" method="post">
   {% csrf_token %}
-  <button type="submit">Log Out</button>
+  {% buttons %}
+	  <button type="submit" class="btn btn-primary">
+		Log Out
+	  </button>
+	{% endbuttons %}
 </form>
 <a href="{% url 'custom_auth:settings' %}">Account settings</a>
 {% else %}

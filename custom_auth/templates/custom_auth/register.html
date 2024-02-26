@@ -19,7 +19,11 @@
 	 	{{ field.label_tag }} {{ field }}
 	</p>
 	{% endfor %}
-	<input type="submit" value="Register" />
+	{% buttons %}
+	  <button type="submit" class="btn btn-primary">
+		Register
+	  </button>
+	{% endbuttons %}
     <a href="{% url 'custom_auth:login' %}">Or login here</a>
 </form> 
 {% endblock %}

@@ -7,7 +7,11 @@
 	{% csrf_token %}
 	<h2>User Settings</h2>
 	{{sett_form.as_p}}
-	<input type="submit" value="Update" />
+	{% buttons %}
+	  <button type="submit" class="btn btn-primary">
+		Update
+	  </button>
+	{% endbuttons %}
 </form>
 <form action="{% url 'custom_auth:change_password' %}" method="POST" novalidate>
 	{% csrf_token %}
@@ -24,7 +28,11 @@
 	 	{{ field.label_tag }} {{ field }}
 	</p>
 	{% endfor %}
-	<input type="submit" value="Change Password" />
+	{% buttons %}
+	  <button type="submit" class="btn btn-primary">
+		Change Password
+	  </button>
+	{% endbuttons %}
 </form>
 <a href="{% url 'chats:chat' %}">Go back</a>
 {% endblock %}
