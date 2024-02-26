@@ -4,21 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Chat App{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% load bootstrap_icons %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 
-<body>
-    {% include "messages.html" %}
-    {% include "custom_auth/user_panel.html" %}
+<body style="margin-bottom: 80px;">
     <header>
-        <h1>Live chat app with Django</h1>
+        <nav class="navbar sticky-top navbar-light" style="background-color: #e3f2fd;">
+            <a class="navbar-brand mx-3" href="{% url 'chats:chat' %}">Django live chat application</a>
+            <button class="navbar-toggler mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            {% include "custom_auth/user_panel.html" %}
+        </nav>
+        {% bootstrap_messages %}
     </header>
 
     <main>
         {% block content %}{% endblock %}
     </main>
-
-    <footer>
-        <p>&copy; 2024 happypio</p>
-    </footer>
 </body>
+
+<footer class="text-center text-lg-start bg-body-tertiary text-muted fixed-bottom">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    &copy; 2024 Copyright:
+    <a class="text-reset fw-bold" href="https://github.com/happypio/chat-app">
+        <i class="fab fa-github">
+            {% bs_icon 'github' extra_classes="bi-valign-middle" %} happypio
+        </i>
+    </a>
+    </div>
+</footer>
+
 </html>

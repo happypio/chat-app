@@ -1,24 +1,20 @@
 {% extends "base.html" %}
-
+{% load bootstrap5 %}
 {% block title %}Chat app - search{% endblock %}
 
 {% block content %}
-
+<div class="container p-5 border mt-3">
 <form action="{% url 'chats:chat' %}" method="POST" novalidate>
-    <h2>What chat room would you like to enter?</h2>
+    <h4 class="text-center">What chat room would you like to enter?</h4>
     {% csrf_token %}
     {% for field in form %}
-	<p>
-		{% if field.errors %}
-		<ul class="errorlist">
-			{% for error in field.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-	 	{{ field }}
-	</p>
+		{% bootstrap_field field show_label=False placeholder="room name"%}
 	{% endfor %}
-    <input type="submit" value="JOIN!" />
+    {% buttons %}
+	  <button type="submit" class="btn btn-primary">
+		JOIN!
+	  </button>
+	{% endbuttons %}
 </form>
+</div>
 {% endblock %}

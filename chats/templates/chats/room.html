@@ -1,14 +1,27 @@
 {% extends "base.html" %}
-
+{% load bootstrap5 %}
 {% block title %}Chat app - room {{ room_name }}{% endblock %}
 
 {% block content %}
-    <h3>Room {{ room_name }}</h3>
-    <textarea id="chat-log" cols="100" rows="20" readonly></textarea><br>
-    <input id="chat-message-input" type="text" size="100"><br>
-    <input id="chat-message-submit" type="button" value="Send">
+<div class="container p-5 border mt-3">
+    <h4 class="text-center">Room {{ room_name }}</h4>
+    <div class="input-group">
+        <textarea id="chat-log" class="form-control" aria-label="Messages" rows="15" readonly></textarea>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">:)</span>
+        </div>
+        <input id="chat-message-input" type="text" class="form-control" placeholder="Message" aria-label="Your message" aria-describedby="basic-addon1">
+      </div>
+    {% buttons %}
+	  <button class="btn btn-primary mt-2"id="chat-message-submit" type="submit" class="btn btn-primary">
+		SEND
+	  </button>
+	{% endbuttons %}
     {{ room_name|json_script:"room-name" }}
-    <br><a href="{% url 'chats:chat' %}">Go back</a>
+    <a class="btn btn-outline-primary me-2" href="{% url 'chats:chat' %}">Go to chats</a>
+</div>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 

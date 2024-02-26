@@ -1,25 +1,22 @@
 {% extends "base.html" %}
-
+{% load bootstrap5 %}
 {% block title %}Chat app - register{% endblock %}
 
 {% block content %}
-<form action="{% url 'custom_auth:register' %}" method="POST" novalidate>
-	{% csrf_token %}
-	<h2>Sign Up</h2>
-		
-	{% for field in form %}
-	<p>
-		{% if field.errors %}
-		<ul class="errorlist">
-			{% for error in field.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-	 	{{ field.label_tag }} {{ field }}
-	</p>
-	{% endfor %}
-	<input type="submit" value="Register" />
-    <a href="{% url 'custom_auth:login' %}">Or login here</a>
-</form> 
+<div class="container p-5 border mt-3">
+	<form action="{% url 'custom_auth:register' %}" method="POST" novalidate>
+		{% csrf_token %}
+		<h4 class="text-center">Register</h4>
+			
+		{% for field in form %}
+		{% bootstrap_field field show_label=False show_help=False %}
+		{% endfor %}
+		{% buttons %}
+		<button type="submit" class="btn btn-primary">
+			Register
+		</button>
+		<a class="btn btn-outline-primary me-2" href="{% url 'custom_auth:login' %}">Or login here</a>
+		{% endbuttons %}
+	</form> 
+</div>
 {% endblock %}

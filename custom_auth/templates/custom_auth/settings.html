@@ -1,30 +1,31 @@
 {% extends "base.html" %}
-
+{% load bootstrap5 %}
 {% block title %}Chat app - settings{% endblock %}
 
 {% block content %}
+<div class="container p-5 border mt-3">
 <form action="{% url 'custom_auth:settings' %}" method="POST" novalidate>
 	{% csrf_token %}
-	<h2>User Settings</h2>
-	{{sett_form.as_p}}
-	<input type="submit" value="Update" />
+	<h4 class="text-center">User settings</h4>
+	{% bootstrap_form sett_form %}
+	{% buttons %}
+	  <button type="submit" class="btn btn-primary">
+		Update
+	  </button>
+	{% endbuttons %}
 </form>
 <form action="{% url 'custom_auth:change_password' %}" method="POST" novalidate>
 	{% csrf_token %}
-	<h2>Change Password</h2>
+	<h4 class="text-center">Change Password</h4>
 	{% for field in pass_form %}
-	<p>
-		{% if field.errors %}
-		<ul class="errorlist">
-			{% for error in field.errors %}
-			<li>{{ error }}</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-	 	{{ field.label_tag }} {{ field }}
-	</p>
+		{% bootstrap_field field show_label=False show_help=False %}
 	{% endfor %}
-	<input type="submit" value="Change Password" />
+	{% buttons %}
+	  <button type="submit" class="btn btn-primary">
+		Change Password
+	  </button>
+	{% endbuttons %}
 </form>
-<a href="{% url 'chats:chat' %}">Go back</a>
+<a class="btn btn-outline-primary me-2" href="{% url 'chats:chat' %}">Go to chats</a>
+</div>
 {% endblock %}
