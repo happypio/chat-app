@@ -3,7 +3,7 @@
 {% block title %}Chat app - search{% endblock %}
 
 {% block content %}
-<div class="container p-5 border">
+<div class="container p-5 border mt-3">
 <form action="{% url 'chats:chat' %}" method="POST" novalidate>
     <h4 class="text-center">What chat room would you like to enter?</h4>
     {% csrf_token %}

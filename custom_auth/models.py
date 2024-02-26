@@ -19,5 +19,5 @@ class CustomUser(AbstractUser):
     type = models.CharField(
         max_length=6,
         choices=TYPE_CHOICES,
-        help_text=("Type of account determines access to chat rooms"),
+        help_text=("Type of an account determines access to chat rooms"),
     )
