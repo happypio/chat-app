@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Chat App{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
 </head>
 
 <body>
-    {% include "messages.html" %}
+    {% bootstrap_messages %}
     {% include "custom_auth/user_panel.html" %}
     <header>
         <h1>Live chat app with Django</h1>
