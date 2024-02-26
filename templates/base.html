@@ -14,10 +14,15 @@
 </head>
 
 <body>
-    {% bootstrap_messages %}
-    {% include "custom_auth/user_panel.html" %}
     <header>
-        <h1>Live chat app with Django</h1>
+        <nav class="navbar sticky-top navbar-light" style="background-color: #e3f2fd;">
+            <a class="navbar-brand mx-3" href="{% url 'chats:chat' %}">Django live chat application</a>
+            <button class="navbar-toggler mx-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            {% include "custom_auth/user_panel.html" %}
+        </nav>
+        {% bootstrap_messages %}
     </header>
 
     <main>

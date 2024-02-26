@@ -1,17 +1,28 @@
 {% load bootstrap5 %}
-<div class="user_panel"></div>
-{% if user.is_authenticated %}
-<p>Hi {{ user.username }}!</p>
-<form action="{% url 'custom_auth:logout' %}" method="post">
-  {% csrf_token %}
-  {% buttons %}
-	  <button type="submit" class="btn btn-primary">
-		Log Out
-	  </button>
-	{% endbuttons %}
-</form>
-<a href="{% url 'custom_auth:settings' %}">Account settings</a>
-{% else %}
-<p>You are not logged in</p>
-{% endif %}
+
+<div class="collapse navbar-collapse mx-3" id="navbarNav">
+    <ul class="navbar-nav ms-auto">
+      {% if user.is_authenticated %}
+      <li class="nav-item mb-2">
+        <span class="navbar-text me-3">Hi {{ user.username }}!</span>
+      </li>
+      <li class="nav-item mb-2">
+        <a class="btn btn-outline-primary me-2" href="{% url 'custom_auth:settings' %}">Account Settings</a>
+      </li>
+      <li class="nav-item mb-2">
+        <form action="{% url 'custom_auth:logout' %}" method="post">
+          {% csrf_token %}
+          {% buttons %}
+          <button type="'submit" class="btn btn-outline-danger">
+            Logout
+          </button>
+          {% endbuttons %}
+        </form>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <span class="navbar-text me-3">You are not logged in</span>
+      </li>
+      {% endif %}
+    </ul>
 </div>
