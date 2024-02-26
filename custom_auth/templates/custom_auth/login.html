@@ -6,7 +6,7 @@
 <div class="container p-5 border mt-3">
 	<form action="{% url 'custom_auth:login' %}" method="POST" novalidate>
 		{% csrf_token %}
-		<h2>Login</h2>
+		<h4 class="text-center">Login</h4>
 		{% for field in form %}
 		{% bootstrap_field field show_label=False %}
 		{% endfor %}
