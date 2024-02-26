@@ -1,9 +1,12 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Chat App{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'chats/style.css' %}">
     {% load bootstrap5 %}
     {% load bootstrap_icons %}
     {% bootstrap_css %}
@@ -20,16 +23,15 @@
     <main>
         {% block content %}{% endblock %}
     </main>
-    
-    <footer class="text-center text-lg-start bg-body-tertiary text-muted fixed-bottom">
-        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-        &copy; 2024 Copyright:
-        <a class="text-reset fw-bold" href="https://github.com/happypio/chat-app">
-            <i class="fab fa-github">
-                {% bs_icon 'github' extra_classes="bi-valign-middle" %} happypio
-            </i>
-        </a>
-        </div>
-    </footer>
 </body>
+<footer class="text-center text-lg-start bg-body-tertiary text-muted footer-bottom">
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    &copy; 2024 Copyright:
+    <a class="text-reset fw-bold" href="https://github.com/happypio/chat-app">
+        <i class="fab fa-github">
+            {% bs_icon 'github' extra_classes="bi-valign-middle" %} happypio
+        </i>
+    </a>
+    </div>
+</footer>
 </html>

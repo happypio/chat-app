@@ -1,0 +1,10 @@
+.footer-bottom {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+body {
+    padding-bottom:30px !important;
+  }
