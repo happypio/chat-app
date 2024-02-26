@@ -38,6 +38,10 @@ jobs:
         run: |
           python manage.py collectstatic --noinput
 
+      - name: Move necessary files
+        run: |
+          cp gae_flexible_deployment/{app.yaml, .gcloudignore, set_up_connections.sh} .
+
       - name: Set up connection variables in app.yaml
         env:
           CLOUD_VPC_CONNECTOR_NAME: ${{ secrets.CLOUD_VPC_CONNECTOR_NAME }}
