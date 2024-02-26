@@ -6,3 +6,4 @@ channels==4.0.0
 daphne==4.1.0
 channels_redis
 django-bootstrap-v5
+django-bootstrap-icons
