@@ -10,12 +10,14 @@ class ChatConsumer(WebsocketConsumer):
     def connect(self):
         if not self.scope["user"].is_authenticated:
             self.close()
+            return
 
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 
         if self.scope["user"].type != RoomNameForm.ROOM_TYPE[self.room_name]:
             self.close()
+            return
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
