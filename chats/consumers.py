@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
@@ -32,7 +33,26 @@ class ChatConsumer(WebsocketConsumer):
 
         self.accept()
 
+        info = f"User {self.scope['user'].username} has joined the chat"
+        # Send info_message to room group
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {"type": "info_chat_message", "info": info},
+        )
+
+    def get_log_time(self):
+        now = datetime.now()
+        current_time = now.strftime("%H:%M:%S")
+        return current_time
+
     def disconnect(self, close_code):
+        info = f"User {self.scope['user'].username} has left the chat"
+        # Send info_message to room group
+        async_to_sync(self.channel_layer.group_send)(
+            self.room_group_name,
+            {"type": "info_chat_message", "info": info},
+        )
+
         # Leave room group
         async_to_sync(self.channel_layer.group_discard)(
             self.room_group_name, self.channel_name
@@ -48,9 +68,29 @@ class ChatConsumer(WebsocketConsumer):
             self.room_group_name, {"type": "chat_message", "message": message}
         )
 
+    # Receive info message from group
+    def info_chat_message(self, event):
+        info = event["info"]
+        # Send message to WebSocket
+        self.send(
+            text_data=json.dumps(
+                {
+                    "info": info,
+                    "log_time": self.get_log_time(),
+                }
+            )
+        )
+
     # Receive message from room group
     def chat_message(self, event):
         message = event["message"]
-
         # Send message to WebSocket
-        self.send(text_data=json.dumps({"message": message}))
+        self.send(
+            text_data=json.dumps(
+                {
+                    "user": self.scope["user"].username,
+                    "message": message,
+                    "log_time": self.get_log_time(),
+                }
+            )
+        )

@@ -26,7 +26,7 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/'
             + roomName
@@ -35,7 +35,18 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            const logTime = data.log_time; 
+            const user = data.user;
+            const message = data.message;
+            const info = data.info;
+
+            if(info) {
+                document.querySelector('#chat-log').value += (data.info + '\n');
+            }
+            else {
+                const formattedMessage = user + ", " + logTime + " :    " + message + '\n';
+                document.querySelector('#chat-log').value += formattedMessage;
+            }
         };
 
         chatSocket.onclose = function(e) {
