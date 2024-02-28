@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.http import Http404
 from django.shortcuts import redirect, render
 
 from .forms import RoomNameForm
@@ -36,6 +37,21 @@ def chat(request):
 
 def room(request, room_name):
     if request.user.is_authenticated:
-        return render(request, "chats/room.html", {"room_name": room_name})
+        if room_name in RoomNameForm.ROOM_TYPE.keys():
+            room_type = RoomNameForm.ROOM_TYPE[room_name]
+            if request.user.type == room_type:
+                return render(
+                    request,
+                    "chats/room.html",
+                    {"room_name": room_name, "room_type": room_type},
+                )
+            else:
+                return render(
+                    request,
+                    "chats/invalid_type.html",
+                    {"room_name": room_name, "room_type": room_type},
+                )
+        else:
+            raise Http404("This room does not exist")
     else:
         return redirect("custom_auth:login")

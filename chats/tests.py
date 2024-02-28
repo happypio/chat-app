@@ -14,16 +14,18 @@ class ChatConsumerTestCase(TransactionTestCase):
             username="testuser",
             email="test@example.com",
             password="testpassword",
+            type="Type 1",
         )
         self.second_user = get_user_model().objects.create_user(
             username="testuser_2",
             email="test2@example.com",
             password="testpassword",
+            type="Type 1",
         )
         self.anonymous_user = AnonymousUser()
 
     async def test_message_sending_by_user(self):
-        room = "room"
+        room = "Room1"
         communicator = WebsocketCommunicator(
             ChatConsumer.as_asgi(), f"/ws/{room}/"
         )
@@ -45,7 +47,7 @@ class ChatConsumerTestCase(TransactionTestCase):
         await communicator.disconnect()
 
     async def test_message_sending_by_anonymous_user(self):
-        room = "room"
+        room = "Room1"
         communicator = WebsocketCommunicator(
             ChatConsumer.as_asgi(), f"/ws/{room}/"
         )
@@ -55,10 +57,8 @@ class ChatConsumerTestCase(TransactionTestCase):
 
         self.assertFalse(connected)
 
-        await communicator.disconnect()
-
     async def test_message_receiving_by_second_user_in_same_room(self):
-        room = "room"
+        room = "Room1"
         communicator = WebsocketCommunicator(
             ChatConsumer.as_asgi(), f"/ws/{room}/"
         )
@@ -90,8 +90,8 @@ class ChatConsumerTestCase(TransactionTestCase):
         await communicator_2.disconnect()
 
     async def test_message_receiving_by_second_user_in_different_room(self):
-        room = "room"
-        different_room = "droom"
+        room = "Room1"
+        different_room = "Room2"
         communicator = WebsocketCommunicator(
             ChatConsumer.as_asgi(), f"/ws/{room}/"
         )
@@ -123,3 +123,25 @@ class ChatConsumerTestCase(TransactionTestCase):
 
         await communicator.disconnect()
         await communicator_2.disconnect()
+
+    async def test_message_sending_by_user_with_wrong_type(self):
+        room = "Room3"  # it has type 2 (user has type 1)
+        communicator = WebsocketCommunicator(
+            ChatConsumer.as_asgi(), f"/ws/{room}/"
+        )
+        communicator.scope["url_route"] = {"kwargs": {"room_name": room}}
+        communicator.scope["user"] = self.user
+        connected, subprotocol = await communicator.connect()
+
+        self.assertFalse(connected)
+
+    async def test_message_sending_by_user_with_wrong_room_name(self):
+        room = "Room8"  # There is no such room
+        communicator = WebsocketCommunicator(
+            ChatConsumer.as_asgi(), f"/ws/{room}/"
+        )
+        communicator.scope["url_route"] = {"kwargs": {"room_name": room}}
+        communicator.scope["user"] = self.user
+        connected, subprotocol = await communicator.connect()
+
+        self.assertFalse(connected)

@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container p-5 border mt-3">
-    <h4 class="text-center">Room {{ room_name }}</h4>
+    <h4 class="text-center">ROOM: {{ room_name }} TYPE: {{ room_type }}</h4>
     <div class="input-group">
         <textarea id="chat-log" class="form-control" aria-label="Messages" rows="15" readonly></textarea>
     </div>
@@ -35,7 +35,18 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            const logTime = data.log_time; 
+            const user = data.user;
+            const message = data.message;
+            const info = data.info;
+
+            if(info) {
+                document.querySelector('#chat-log').value += (data.info + '\n');
+            }
+            else {
+                const formattedMessage = user + ", " + logTime + " :    " + message + '\n';
+                document.querySelector('#chat-log').value += formattedMessage;
+            }
         };
 
         chatSocket.onclose = function(e) {
