@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap5 %}
+{% block title %}Chat app - search{% endblock %}
+
+{% block content %}
+<div class="container p-5 border mt-3">
+<form action="{% url 'chats:chat' %}" method="POST" novalidate>
+    <h4 class="text-center">This room is not available for your account type :(</h4>
+    <h6 class="text-left">You tried to enter {{ room_name }} which is only for {{ room_type }} accounts.</h6>
+    <h6 class="text-left">Change your account type in account settings:</h6>
+    {% buttons %}
+    <a class="btn btn-outline-primary me-2" href="{% url 'chats:chat' %}">Go back to chats</a>
+    <a class="btn btn-outline-primary me-2" href="{% url 'custom_auth:settings' %}">Go to account settings</a>
+    {% endbuttons %}
+</form>
+</div>
+{% endblock %}

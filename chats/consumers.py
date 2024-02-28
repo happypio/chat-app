@@ -3,6 +3,8 @@ import json
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
+from .forms import RoomNameForm
+
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -11,6 +13,9 @@ class ChatConsumer(WebsocketConsumer):
 
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
+
+        if self.scope["user"].type != RoomNameForm.ROOM_TYPE[self.room_name]:
+            self.close()
 
         # Join room group
         async_to_sync(self.channel_layer.group_add)(
