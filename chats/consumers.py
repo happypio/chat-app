@@ -15,6 +15,12 @@ class ChatConsumer(WebsocketConsumer):
         self.room_name = self.scope["url_route"]["kwargs"]["room_name"]
         self.room_group_name = f"chat_{self.room_name}"
 
+        # check if room name is in allowed rooms
+        if self.room_name not in RoomNameForm.ROOM_TYPE.keys():
+            self.close()
+            return
+
+        # check if type is suitable
         if self.scope["user"].type != RoomNameForm.ROOM_TYPE[self.room_name]:
             self.close()
             return

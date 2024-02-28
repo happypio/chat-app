@@ -124,13 +124,24 @@ class ChatConsumerTestCase(TransactionTestCase):
         await communicator.disconnect()
         await communicator_2.disconnect()
 
-        async def test_message_sending_by_user_with_wrong_type(self):
-            room = "Room3"  # it has type 2 (user has type 1)
-            communicator = WebsocketCommunicator(
-                ChatConsumer.as_asgi(), f"/ws/{room}/"
-            )
-            communicator.scope["url_route"] = {"kwargs": {"room_name": room}}
-            communicator.scope["user"] = self.user
-            connected, subprotocol = await communicator.connect()
+    async def test_message_sending_by_user_with_wrong_type(self):
+        room = "Room3"  # it has type 2 (user has type 1)
+        communicator = WebsocketCommunicator(
+            ChatConsumer.as_asgi(), f"/ws/{room}/"
+        )
+        communicator.scope["url_route"] = {"kwargs": {"room_name": room}}
+        communicator.scope["user"] = self.user
+        connected, subprotocol = await communicator.connect()
 
-            self.assertFalse(connected)
+        self.assertFalse(connected)
+
+    async def test_message_sending_by_user_with_wrong_room_name(self):
+        room = "Room8"  # There is no such room
+        communicator = WebsocketCommunicator(
+            ChatConsumer.as_asgi(), f"/ws/{room}/"
+        )
+        communicator.scope["url_route"] = {"kwargs": {"room_name": room}}
+        communicator.scope["user"] = self.user
+        connected, subprotocol = await communicator.connect()
+
+        self.assertFalse(connected)
