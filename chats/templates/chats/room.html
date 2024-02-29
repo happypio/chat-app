@@ -41,10 +41,10 @@
             const info = data.info;
 
             if(info) {
-                document.querySelector('#chat-log').value += (data.info + '\n');
+                document.querySelector('#chat-log').value += (logTime + ":    " + data.info + '\n');
             }
             else {
-                const formattedMessage = user + ", " + logTime + " :    " + message + '\n';
+                const formattedMessage = user + ", " + logTime + ":    " + message + '\n';
                 document.querySelector('#chat-log').value += formattedMessage;
             }
         };

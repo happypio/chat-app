@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
@@ -41,7 +41,7 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def get_log_time(self):
-        now = datetime.now()
+        now = datetime.now(timezone.utc) + timedelta(hours=1)
         current_time = now.strftime("%H:%M:%S")
         return current_time
 
@@ -65,7 +65,12 @@ class ChatConsumer(WebsocketConsumer):
 
         # Send message to room group
         async_to_sync(self.channel_layer.group_send)(
-            self.room_group_name, {"type": "chat_message", "message": message}
+            self.room_group_name,
+            {
+                "type": "chat_message",
+                "message": message,
+                "user": self.scope["user"].username,
+            },
         )
 
     # Receive info message from group
@@ -84,11 +89,12 @@ class ChatConsumer(WebsocketConsumer):
     # Receive message from room group
     def chat_message(self, event):
         message = event["message"]
+        user = event["user"]
         # Send message to WebSocket
         self.send(
             text_data=json.dumps(
                 {
-                    "user": self.scope["user"].username,
+                    "user": user,
                     "message": message,
                     "log_time": self.get_log_time(),
                 }
