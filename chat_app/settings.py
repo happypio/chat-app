@@ -178,3 +178,5 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+WS_CONN = env("WS_CONN")

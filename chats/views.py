@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import redirect, render
 
+from chat_app.settings import WS_CONN
+
 from .forms import RoomNameForm
 
 
@@ -43,7 +45,11 @@ def room(request, room_name):
                 return render(
                     request,
                     "chats/room.html",
-                    {"room_name": room_name, "room_type": room_type},
+                    {
+                        "room_name": room_name,
+                        "room_type": room_type,
+                        "ws_conn": WS_CONN,
+                    },
                 )
             else:
                 return render(
