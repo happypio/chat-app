@@ -41,7 +41,13 @@ class ChatConsumerTestCase(TransactionTestCase):
         }
         await communicator.send_json_to(message_data)
 
+        # test info about leaving/joing the chat
         response = await communicator.receive_json_from()
+        self.assertEqual(response["info"], "User testuser has joined the chat")
+
+        # test the message
+        response = await communicator.receive_json_from()
+
         self.assertEqual(response["message"], "Test message")
 
         await communicator.disconnect()
@@ -83,7 +89,17 @@ class ChatConsumerTestCase(TransactionTestCase):
         }
         await communicator.send_json_to(message_data)
 
-        response = await communicator_2.receive_json_from()
+        # test info about leaving/joing the chat
+        response = await communicator.receive_json_from()
+        self.assertEqual(response["info"], "User testuser has joined the chat")
+
+        # test info about leaving/joing the chat
+        response = await communicator.receive_json_from()
+        self.assertEqual(
+            response["info"], "User testuser_2 has joined the chat"
+        )
+
+        response = await communicator.receive_json_from()
         self.assertEqual(response["message"], "Test message")
 
         await communicator.disconnect()
@@ -119,7 +135,7 @@ class ChatConsumerTestCase(TransactionTestCase):
         await communicator.send_json_to(message_data)
         res = await communicator_2.receive_nothing()
 
-        self.assertTrue(res)
+        self.assertFalse(res)
 
         await communicator.disconnect()
         await communicator_2.disconnect()
