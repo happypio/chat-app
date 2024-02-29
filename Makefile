@@ -19,6 +19,12 @@ $(DEV_VENV)/bin/activate: requirements.txt requirements_dev.txt
 	python3.10 -m venv $(DEV_VENV)
 	$(DEV_PIP) install -r requirements.txt -r requirements_dev.txt
 
+install: $(DEV_VENV)/bin/activate $(VENV)/bin/activate
+	python3.10 -m venv $(DEV_VENV)
+	$(DEV_PIP) install -r requirements.txt -r requirements_dev.txt
+	python3.10 -m venv $(VENV)
+	$(PIP) install -r requirements.txt
+	
 clean:
 	rm -rf $(VENV) $(DEV_VENV)
 	find -iname "*pyc" -delete

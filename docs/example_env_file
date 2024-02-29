@@ -1,0 +1,5 @@
+SECRET_KEY= DJANGO SECRET KEY
+DEBUG= True for development, False for production
+DATABASE_URL= url for database, when you use cloud sql proxy it will be postgres://{USER}:{USER_PASSWORD}@localhost/{NAME_OF_DATABASE}
+REDIS_HOST= addres for redis (channel layer), usually 127.0.0.1, can be run with docker: docker run --rm -p 6379:6379 redis:7
+WS_CONN= connection type for web sockets, ws locally and wss on GCP

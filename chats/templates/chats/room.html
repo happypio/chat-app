@@ -20,13 +20,15 @@
 	  </button>
 	{% endbuttons %}
     {{ room_name|json_script:"room-name" }}
+    {{ ws_conn|json_script:"ws-conn" }}
     <a class="btn btn-outline-primary me-2" href="{% url 'chats:chat' %}">Go to chats</a>
 </div>
     <script>
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
-
+        const wsConn = JSON.parse(document.getElementById('ws-conn').textContent);
         const chatSocket = new WebSocket(
-            'wss://'
+            wsConn 
+            + '://'
             + window.location.host
             + '/ws/'
             + roomName

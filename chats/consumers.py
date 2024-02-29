@@ -8,7 +8,14 @@ from .forms import RoomNameForm
 
 
 class ChatConsumer(WebsocketConsumer):
+    """
+    WebSocket consumer for handling chat functionality.
+    """
+
     def connect(self):
+        """
+        Connects a user to the chat room if authenticated and verifies room access permissions.
+        """
         if not self.scope["user"].is_authenticated:
             self.close()
             return
@@ -41,11 +48,21 @@ class ChatConsumer(WebsocketConsumer):
         )
 
     def get_log_time(self):
+        """
+        Get the current time in UTC format.
+
+        Returns:
+            str: Current time in "HH:MM:SS" format.
+        """
         now = datetime.now(timezone.utc) + timedelta(hours=1)
         current_time = now.strftime("%H:%M:%S")
         return current_time
 
     def disconnect(self, close_code):
+        """
+        Handles disconnection from the chat room.
+        """
+
         info = f"User {self.scope['user'].username} has left the chat"
         # Send info_message to room group
         async_to_sync(self.channel_layer.group_send)(
@@ -60,6 +77,12 @@ class ChatConsumer(WebsocketConsumer):
 
     # Receive message from WebSocket
     def receive(self, text_data):
+        """
+        Receives a message from WebSocket and forwards it to the chat room.
+
+        Args:
+            text_data (str): The received message data.
+        """
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
 
@@ -75,6 +98,12 @@ class ChatConsumer(WebsocketConsumer):
 
     # Receive info message from group
     def info_chat_message(self, event):
+        """
+        Sends an information message to the WebSocket.
+
+        Args:
+            event (dict): The event containing the information message.
+        """
         info = event["info"]
         # Send message to WebSocket
         self.send(
@@ -88,6 +117,13 @@ class ChatConsumer(WebsocketConsumer):
 
     # Receive message from room group
     def chat_message(self, event):
+        """
+        Sends a chat message to the WebSocket.
+
+        Args:
+            event (dict): The event containing the chat message.
+        """
+
         message = event["message"]
         user = event["user"]
         # Send message to WebSocket
