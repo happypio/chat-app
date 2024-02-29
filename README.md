@@ -5,6 +5,7 @@
 * [Details ](#details)
 * [Technologies](#technologies)
 * [Setup before run](#setup-before-run)
+* [TESTS](#tests)
 * [Run](#run)
 * [Deploy on GCP](#deploy-on-gcp)
 
@@ -56,6 +57,19 @@ The chat app displays information about user joining/leaving the chat, as well a
     $ python3 manage.py makemigrations
     $ python manage.py migrate
     ```
+
+## Tests
+Install all the requirements and set up virtual enviroments using the following command:
+
+```
+$ make install
+```
+
+Next, execute (in the virtual enviroment) the following command to ensure, that the set up was successful:
+
+```
+$ python3 manage.py test
+```
 
 ## Run
 To run the application, execute the following command. 
