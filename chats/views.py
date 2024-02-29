@@ -8,6 +8,16 @@ from .forms import RoomNameForm
 
 
 def chat(request):
+    """
+    Renders the chat page if the user is authenticated. It also hangles form validation.
+
+    Args:
+        request (HttpRequest): The request object.
+
+    Returns:
+        HttpResponse: redirects to the chat window or displays the chat selection window.
+    """
+
     if request.user.is_authenticated:
         if request.method == "POST":
             form = RoomNameForm(request.POST)
@@ -38,6 +48,17 @@ def chat(request):
 
 
 def room(request, room_name):
+    """
+    Renders the chat room if user is authenticated and has access to the room.
+
+    Args:
+        request (HttpRequest): The request object.
+        room_name (str): The name of the chat room.
+
+    Returns:
+        HttpResponse: renders the chat room or invalid_type template
+    """
+
     if request.user.is_authenticated:
         if room_name in RoomNameForm.ROOM_TYPE.keys():
             room_type = RoomNameForm.ROOM_TYPE[room_name]
