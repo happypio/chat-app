@@ -13,7 +13,7 @@
 This is a web application with live chats and custom user authentication. It uses Bootstrap on the frontend.
 
 The app was deployed on the GCP using CI/CD. Each time someone pushes changes to the main branch, GithHub Workflow starts a job and updates the app version on the GCP. You can access the deployed application via the following link:
-https://django-chat-app-414723.lm.r.appspot.com/
+~~https://django-chat-app-414723.lm.r.appspot.com/~~ (unfortunately, my free trial GCP account has expired)
 
 You can find some screenshots in the [docs](./docs/) folder.
 
